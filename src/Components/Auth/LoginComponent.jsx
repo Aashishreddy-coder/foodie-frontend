@@ -10,10 +10,12 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginComponent = () => {
-  const [errorMessage, setErrorMessage] = useState(""); // Add state for error
-
+  const [errorMessage, setErrorMessage] = useState("");
+  // Add state for error
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -29,10 +31,12 @@ const LoginComponent = () => {
         data
       );
       console.log(response.data);
-      setErrorMessage(""); // Clear any previous errors
+      localStorage.setItem("token", response.data);
+      setErrorMessage("");
+      navigate("/home");
     } catch (error) {
       if (error.response) {
-        setErrorMessage(error.response.data); // Set error message from backend
+        setErrorMessage(error.response.data);
       } else {
         setErrorMessage("Something went wrong. Please try again.");
       }
@@ -59,7 +63,6 @@ const LoginComponent = () => {
             Login
           </Typography>
 
-          {/* Add error message display */}
           {errorMessage && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {errorMessage}
