@@ -6,23 +6,32 @@ import HomeComponent from "./Components/Home/HomeComponent";
 import ProtectedRoute from "./Components/Auth/ProtectedRoute";
 import Restaurant from "./Components/Home/Restaurant";
 import Dish from "./Components/Home/Dish";
+import Favorites from "./Components/Home/Favorites";
+import Orders from "./Components/Home/Orders";
+import MainLayout from "./Components/Home/MainLayout";
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<LoginComponent />} />
+        <Route path="/login" element={<LoginComponent />} />
         <Route path="/register" element={<RegisterForm />} />
+
+        {/* Protected Routes with MainLayout */}
         <Route
-          path="/home"
+          path="/"
           element={
             <ProtectedRoute>
-              <HomeComponent />
+              <MainLayout />
             </ProtectedRoute>
           }
         >
-          <Route path="restaurant" element={<Restaurant />} />
-          <Route path="dish" element={<Dish />} />
+          <Route path="/home" element={<HomeComponent />}>
+            <Route path="restaurant" element={<Restaurant />} />
+            <Route path="dish" element={<Dish />} />
+          </Route>
+          <Route path="favorites" element={<Favorites />} />
+          <Route path="orders" element={<Orders />} />
         </Route>
       </Routes>
     </div>

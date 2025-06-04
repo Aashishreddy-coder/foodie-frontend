@@ -1,19 +1,18 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { createContext } from "react";
 import { Outlet, Link } from "react-router-dom";
-import Header from "./Header";
-import Footer from "./Footer";
 import { useEffect } from "react";
 import { Box, Stack, Link as MuiLink } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { cityContext } from "./MainLayout";
 
 export const LocationContext = createContext();
 
 const HomeComponent = () => {
-  const [city, setCity] = useState("");
-  const [latitude, setLatitude] = useState(19.076);
-  const [longitude, setLongitude] = useState(72.8777);
+  const { city } = useContext(cityContext);
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -33,7 +32,6 @@ const HomeComponent = () => {
 
   return (
     <div>
-      <Header city={city} setCity={setCity} />
       <Box sx={{ py: 2, backgroundColor: "#f5f5f5" }}>
         <Stack
           direction="row"
@@ -70,7 +68,6 @@ const HomeComponent = () => {
       <LocationContext.Provider value={{ city, latitude, longitude }}>
         <Outlet />
       </LocationContext.Provider>
-      <Footer />
     </div>
   );
 };
