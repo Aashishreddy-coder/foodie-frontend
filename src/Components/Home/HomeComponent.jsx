@@ -10,25 +10,7 @@ import { cityContext } from "./MainLayout";
 export const LocationContext = createContext();
 
 const HomeComponent = () => {
-  const { city } = useContext(cityContext);
-  const [latitude, setLatitude] = useState();
-  const [longitude, setLongitude] = useState();
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-        }
-      );
-    } else {
-      console.log("Geolocation is not supported by this browser.");
-    }
-  }, []);
+  const { city, latitude, longitude } = useContext(cityContext);
 
   return (
     <div>

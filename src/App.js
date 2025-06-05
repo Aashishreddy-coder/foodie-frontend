@@ -9,6 +9,7 @@ import Dish from "./Components/Home/Dish";
 import Favorites from "./Components/Home/Favorites";
 import Orders from "./Components/Home/Orders";
 import MainLayout from "./Components/Home/MainLayout";
+import RestaurantDishes from "./Components/Home/RestaurantDishes";
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
         >
           <Route path="/home" element={<HomeComponent />}>
             <Route path="restaurant" element={<Restaurant />} />
+            <Route
+              path="/home/restaurant/:restaurantId/:distance"
+              element={<RestaurantDishes />}
+            />
             <Route path="dish" element={<Dish />} />
           </Route>
           <Route path="favorites" element={<Favorites />} />
