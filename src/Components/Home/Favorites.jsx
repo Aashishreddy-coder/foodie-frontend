@@ -12,9 +12,7 @@ const Favorites = () => {
   const handleDelete = async (favoriteId) => {
     try {
       await axiosInstance.delete(`/api/favourites/delete/${favoriteId}`);
-      // Remove the deleted favorite from both states
       setFavorites(favorites.filter((fav) => fav.id !== favoriteId));
-      // Find the dishId for this favorite and remove it from dishDetails
       const favoriteToDelete = favorites.find((fav) => fav.id === favoriteId);
       if (favoriteToDelete) {
         setDishDetails(
@@ -27,25 +25,31 @@ const Favorites = () => {
   };
 
   useEffect(() => {
-    const fetchFavorites = async () => {
+    const fetchFavoritesAndDishes = async () => {
       try {
-        // First get all favorites
-        const response = await axiosInstance.get("/api/favourites/getall");
-        setFavorites(response.data);
+        // 1. Fetch favorites
+        const favResponse = await axiosInstance.get("/api/favourites/getall");
+        const favs = favResponse.data;
+        setFavorites(favs);
 
-        // Then get dish details for each favorite
-        const allDishDetails = [];
-        for (const favorite of response.data) {
-          try {
-            const dishResponse = await axiosInstance.get(
+        // 2. Create promises for all dish fetches
+        const dishPromises = favs.map((favorite) =>
+          axiosInstance
+            .get(
               `/dishes/${favorite.dishId}?latitude=${latitude}&longitude=${longitude}`
-            );
-            allDishDetails.push(dishResponse.data);
-          } catch (error) {
-            console.error(`Error fetching dish ${favorite.dishId}:`, error);
-          }
-        }
-        setDishDetails(allDishDetails);
+            )
+            .then((response) => response.data)
+            .catch((error) => {
+              console.error(`Error fetching dish ${favorite.dishId}:`, error);
+              return null;
+            })
+        );
+
+        // 3. Wait for all dish fetches to complete
+        const allDishDetails = await Promise.all(dishPromises);
+
+        // 4. Filter out any failed requests and set the state
+        setDishDetails(allDishDetails.filter((dish) => dish !== null));
       } catch (error) {
         if (error.response && error.response.status === 404) {
           console.log("No favorites found.");
@@ -55,7 +59,8 @@ const Favorites = () => {
         }
       }
     };
-    fetchFavorites();
+
+    fetchFavoritesAndDishes();
   }, [latitude, longitude]);
 
   return (

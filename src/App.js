@@ -28,6 +28,7 @@ function App() {
           }
         >
           <Route path="/home" element={<HomeComponent />}>
+            <Route index element={<Restaurant />} />
             <Route path="restaurant" element={<Restaurant />} />
             <Route
               path="/home/restaurant/:restaurantId/:distance"
