@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axiosInstance from "../../utils/axios";
 import {
   Card,
@@ -9,10 +9,29 @@ import {
   ButtonGroup,
 } from "@mui/material";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import MapSelector from "./MapSelector";
 
 const Orders = () => {
   const [order, setOrder] = useState(null);
   const [restaurant, setRestaurant] = useState(null);
+  const [payment, setPayment] = useState(null);
+
+  const handlePayment = async () => {
+    try {
+      const response = await axiosInstance.post("/payment/checkout", {
+        amount: order.totalAmount * 100,
+        currency: "INR",
+        name: restaurant.restaurantName,
+        quantity: 1,
+      });
+      console.log(response.data);
+
+      setPayment(response.data);
+      window.location.href = response.data.sessionUrl;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchOrderAndRestaurant = async () => {
@@ -71,6 +90,9 @@ const Orders = () => {
             Restaurant: {restaurant ? restaurant.restaurantName : "Loading..."}
           </Typography>
           <Typography variant="body2">
+            Restaurant ID: {order.restaurantId}
+          </Typography>
+          <Typography variant="body2">
             Pending: {order.paymentStatus}
           </Typography>
 
@@ -78,7 +100,7 @@ const Orders = () => {
             <Typography variant="subtitle1">Items:</Typography>
             {order.items.map((item, index) => (
               <Box key={index} sx={{ ml: 2, mt: 1 }}>
-                <Typography variant="body1">{item.dishId}</Typography>
+                <Typography variant="body1">{item.dishName}</Typography>
                 <Typography variant="body2">Price: ₹{item.price}</Typography>
                 <Typography variant="body2">
                   Quantity: {item.quantity}
@@ -109,7 +131,13 @@ const Orders = () => {
             ))}
           </Box>
 
-          <Button variant="contained" endIcon={<CurrencyRupeeIcon />}>
+          <MapSelector restaurantId={order.restaurantId} />
+
+          <Button
+            variant="contained"
+            endIcon={<CurrencyRupeeIcon />}
+            onClick={handlePayment}
+          >
             {`Total Amount: ${order.totalAmount}`}
           </Button>
         </CardContent>

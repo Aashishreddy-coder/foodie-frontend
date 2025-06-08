@@ -10,6 +10,7 @@ import Favorites from "./Components/Home/Favorites";
 import Orders from "./Components/Home/Orders";
 import MainLayout from "./Components/Home/MainLayout";
 import RestaurantDishes from "./Components/Home/RestaurantDishes";
+import Delivery from "./Components/Home/Delivery";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           </Route>
           <Route path="favorites" element={<Favorites />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="delivery" element={<Delivery />} />
         </Route>
       </Routes>
     </div>

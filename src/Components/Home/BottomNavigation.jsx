@@ -6,6 +6,7 @@ import {
   Favorite,
   ShoppingCart,
   Home,
+  DeliveryDining,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
@@ -22,16 +23,21 @@ const BottomNavigationComponent = () => {
           navigate(newValue);
         }}
       >
-        <BottomNavigationAction label="Home" value="/home" icon={<Home />} />
+        <BottomNavigationAction label="Home" value="home" icon={<Home />} />
         <BottomNavigationAction
           label="Favorites"
-          value="/favorites"
+          value="favorites"
           icon={<Favorite />}
         />
         <BottomNavigationAction
           label="Orders"
-          value="/orders"
+          value="orders"
           icon={<ShoppingCart />}
+        />
+        <BottomNavigationAction
+          label="Delivery"
+          value="delivery"
+          icon={<DeliveryDining />}
         />
       </BottomNavigation>
     </Paper>
