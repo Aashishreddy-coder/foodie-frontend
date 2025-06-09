@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 
 const RestaurantCard = ({ restaurant }) => {
   return (
-    <Link to={`/home/restaurant/${restaurant.id}/${restaurant.distanceInKm}`}>
+    <Link
+      style={{ textDecoration: "none" }}
+      to={`/home/restaurant/${restaurant.id}/${restaurant.distanceInKm}`}
+    >
       <Card sx={{ maxWidth: 300, margin: 2, padding: 2 }}>
         <CardContent>
           <Typography variant="h6">{restaurant.restaurantName}</Typography>

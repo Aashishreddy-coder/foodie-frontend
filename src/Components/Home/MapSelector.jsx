@@ -16,6 +16,7 @@ const MapSelector = ({ restaurantId }) => {
   const [showMap, setShowMap] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [distanceError, setDistanceError] = useState(null);
+  const [distance, setDistance] = useState(null);
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyCzviV_eTddv220qNG0wrl_kVLzpCAgLPQ",
   });
@@ -34,11 +35,14 @@ const MapSelector = ({ restaurantId }) => {
             }
           );
 
-          const distance = response.data;
-          if (distance > 30) {
+          const calculatedDistance = response.data / 1000;
+          setDistance(calculatedDistance);
+
+          if (calculatedDistance > 30) {
             setDistanceError(
-              `Delivery distance (${distance}
-               km) is too far. Maximum delivery distance is 30 km.`
+              `Delivery distance (${calculatedDistance.toFixed(
+                2
+              )} km) is too far. Maximum delivery distance is 30 km.`
             );
           } else {
             setDistanceError(null);
@@ -46,7 +50,7 @@ const MapSelector = ({ restaurantId }) => {
         } catch (error) {
           console.error("Error checking delivery distance:", error);
           setDistanceError(
-            "Error checking delivery distance. Please try again."
+            "Error checking delivery distance. Please select proper location."
           );
         }
       }
@@ -88,6 +92,7 @@ const MapSelector = ({ restaurantId }) => {
           <h4>Selected Coordinates:</h4>
           <p>Latitude: {selectedLocation.lat}</p>
           <p>Longitude: {selectedLocation.lng}</p>
+          {distance && <p>Distance: {distance.toFixed(2)} km</p>}
           {distanceError && (
             <Alert severity="error" sx={{ mt: 2 }}>
               {distanceError}
