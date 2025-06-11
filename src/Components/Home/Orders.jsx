@@ -15,7 +15,11 @@ const Orders = () => {
   const [order, setOrder] = useState(null);
   const [restaurant, setRestaurant] = useState(null);
   const [payment, setPayment] = useState(null);
+  const [isLocationValid, setIsLocationValid] = useState(false);
 
+  const [distance, setDistance] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [time, setTime] = useState(null);
   const handlePayment = async () => {
     try {
       const response = await axiosInstance.post("/payment/checkout", {
@@ -23,13 +27,28 @@ const Orders = () => {
         currency: "INR",
         name: restaurant.restaurantName,
         quantity: 1,
+        restaurantId: order.restaurantId,
+        restaurantName: restaurant.restaurantName,
+        address: address,
+        distance: distance,
+        orderId: order.id,
+        orderItems: JSON.stringify(order.items),
+        time: time,
       });
-      console.log(response.data);
 
-      setPayment(response.data);
-      window.location.href = response.data.sessionUrl;
+      console.log("Payment response:", response.data);
+
+      if (response.data && response.data.sessionUrl) {
+        setPayment(response.data);
+        // Use replace instead of href for better handling
+        window.location.replace(response.data.sessionUrl);
+      } else {
+        console.error("Invalid payment session response:", response.data);
+        // You might want to show an error message to the user here
+      }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Payment error:", error.response?.data || error.message);
+      // You might want to show an error message to the user here
     }
   };
 
@@ -131,14 +150,27 @@ const Orders = () => {
             ))}
           </Box>
 
-          <MapSelector restaurantId={order.restaurantId} />
+          <MapSelector
+            restaurantId={order.restaurantId}
+            onLocationValid={setIsLocationValid}
+            distance={distance}
+            address={address}
+            setDistance={setDistance}
+            setAddress={setAddress}
+            setTime={setTime}
+            time={time}
+          />
 
           <Button
             variant="contained"
             endIcon={<CurrencyRupeeIcon />}
             onClick={handlePayment}
+            disabled={!isLocationValid}
+            sx={{ mt: 2 }}
           >
-            {`Total Amount: ${order.totalAmount}`}
+            {isLocationValid
+              ? `Pay ₹${order.totalAmount}`
+              : "Select a valid delivery location to proceed"}
           </Button>
         </CardContent>
       </Card>

@@ -10,13 +10,22 @@ const mapContainerStyle = {
   height: "500px", // Not 100%
 };
 
-const MapSelector = ({ restaurantId }) => {
+const MapSelector = ({
+  restaurantId,
+  onLocationValid,
+  setDistance,
+  setAddress,
+  distance,
+  address,
+  setTime,
+  time,
+}) => {
   const { latitude, longitude } = useContext(cityContext);
   const center = { lat: latitude, lng: longitude };
   const [showMap, setShowMap] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [distanceError, setDistanceError] = useState(null);
-  const [distance, setDistance] = useState(null);
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyCzviV_eTddv220qNG0wrl_kVLzpCAgLPQ",
   });
@@ -35,8 +44,10 @@ const MapSelector = ({ restaurantId }) => {
             }
           );
 
-          const calculatedDistance = response.data / 1000;
+          const calculatedDistance = response.data.distanceInMeters / 1000;
+          setAddress(response.data.address);
           setDistance(calculatedDistance);
+          setTime(response.data.timeInMinutes);
 
           if (calculatedDistance > 30) {
             setDistanceError(
@@ -44,20 +55,25 @@ const MapSelector = ({ restaurantId }) => {
                 2
               )} km) is too far. Maximum delivery distance is 30 km.`
             );
+            onLocationValid(false);
           } else {
             setDistanceError(null);
+            onLocationValid(true);
           }
         } catch (error) {
           console.error("Error checking delivery distance:", error);
           setDistanceError(
             "Error checking delivery distance. Please select proper location."
           );
+          onLocationValid(false);
         }
+      } else {
+        onLocationValid(false);
       }
     };
 
     checkDeliveryDistance();
-  }, [selectedLocation, restaurantId]);
+  }, [selectedLocation, restaurantId, onLocationValid]);
 
   const handleMapClick = (event) => {
     const lat = event.latLng.lat();
@@ -93,6 +109,8 @@ const MapSelector = ({ restaurantId }) => {
           <p>Latitude: {selectedLocation.lat}</p>
           <p>Longitude: {selectedLocation.lng}</p>
           {distance && <p>Distance: {distance.toFixed(2)} km</p>}
+          {address && <p>Address: {address}</p>}
+          {time && <p>Time: {time}</p>}
           {distanceError && (
             <Alert severity="error" sx={{ mt: 2 }}>
               {distanceError}
