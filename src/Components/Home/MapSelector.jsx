@@ -3,7 +3,15 @@ import { useContext, useState, useEffect } from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { cityContext } from "./MainLayout";
 import axiosInstance from "../../utils/axios";
-import { Alert, Box } from "@mui/material";
+import { 
+  Alert, 
+  Box, 
+  Button,
+  Collapse,
+  Fade,
+  Paper,
+  Typography 
+} from "@mui/material";
 
 const mapContainerStyle = {
   width: "100%",
@@ -86,37 +94,47 @@ const MapSelector = ({
 
   return (
     <div>
-      <button onClick={() => setShowMap(!showMap)}>
-        {showMap ? "Hide Map" : "Show Map"}
-      </button>
+      <Button
+        variant="outlined"
+        onClick={() => setShowMap(!showMap)}
+        sx={{ mb: 2 }}
+        color={showMap ? "error" : "primary"}
+      >
+        {showMap ? "Hide Map" : "📍 Choose Your Delivery Location"}
+      </Button>
 
-      {showMap && (
-        <div>
-          <h1>Map</h1>
+      <Collapse in={showMap} timeout={500}>
+        <Box sx={{ border: "1px solid #ccc", borderRadius: 2, overflow: "hidden", mt: 2 }}>
+          <Typography variant="h6" align="center" sx={{ py: 1 }} color="primary">
+            Tap on the map to select your delivery point
+          </Typography>
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={selectedLocation || center}
-            zoom={selectedLocation ? 20 : 20}
+            zoom={selectedLocation ? 18 : 16}
             onClick={handleMapClick}
           >
             {selectedLocation && <Marker position={selectedLocation} />}
           </GoogleMap>
-        </div>
-      )}
-      {selectedLocation && (
-        <Box sx={{ mt: 2 }}>
-          <h4>Selected Coordinates:</h4>
-          <p>Latitude: {selectedLocation.lat}</p>
-          <p>Longitude: {selectedLocation.lng}</p>
-          {distance && <p>Distance: {distance.toFixed(2)} km</p>}
-          {address && <p>Address: {address}</p>}
-          {time && <p>Time: {time}</p>}
-          {distanceError && (
-            <Alert severity="error" sx={{ mt: 2 }}>
-              {distanceError}
-            </Alert>
-          )}
         </Box>
+      </Collapse>
+
+      {selectedLocation && (
+        <Fade in timeout={600}>
+          <Paper elevation={2} sx={{ p: 2, mt: 2 }}>
+            <Typography variant="subtitle1" fontWeight={600}>Delivery Details:</Typography>
+            <Typography variant="body2">Latitude: {selectedLocation.lat.toFixed(6)}</Typography>
+            <Typography variant="body2">Longitude: {selectedLocation.lng.toFixed(6)}</Typography>
+            {distance && <Typography variant="body2">Distance: {distance.toFixed(2)} km</Typography>}
+            {address && <Typography variant="body2">Address: {address}</Typography>}
+            {time && <Typography variant="body2">Estimated Time: {time} minutes</Typography>}
+            {distanceError && (
+              <Alert severity="error" sx={{ mt: 2 }}>
+                {distanceError}
+              </Alert>
+            )}
+          </Paper>
+        </Fade>
       )}
     </div>
   );

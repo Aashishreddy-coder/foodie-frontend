@@ -15,8 +15,10 @@ const theme = createTheme({
       contrastText: '#ffffff',
     },
     background: {
-      default: '#fefae0', // Light Sand
-      paper: '#ffffff',
+      default: '#fff3c4',    // App Background
+      paper: '#ffffff',      // Cards
+      navbar: '#ffffff',     // Bars (HomeComponent + BottomNavigation)
+      container: '#f1f1f1',  // Container Background
     },
     text: {
       primary: '#263238', // Charcoal

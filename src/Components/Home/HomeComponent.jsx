@@ -31,10 +31,10 @@ const HomeComponent = () => {
         <Box
           sx={{
             py: isMobile ? 1 : 2,
-            backgroundColor: "background.paper",
+            backgroundColor: "background.navbar",
             boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
             borderBottom: `1px solid ${theme.palette.divider}`,
-            borderRadius: "16px 16px 0 0",
+            borderRadius: "0 0 0 0",
           }}
         >
           <Stack
@@ -58,6 +58,7 @@ const HomeComponent = () => {
                 textTransform: "none",
                 px: 3,
                 py: 1,
+                transition: "background-color 0.3s ease, color 0.3s ease",
                 "&:hover": {
                   backgroundColor:
                     currentPath.includes("/restaurant")
