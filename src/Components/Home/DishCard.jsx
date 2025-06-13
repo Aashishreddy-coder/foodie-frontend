@@ -66,85 +66,51 @@ const DishCard = ({ dish }) => {
 
   const handleCloseOrderSuccess = () => {
     setOrderSuccess(false);
-  }
+  };
   const handleCloseFavSuccess = () => {
     setFavSuccess(false);
   };
 
   return (
     <>
-      <Fade in timeout={800}>
-        <Card sx={{ 
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          borderRadius: 3,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease",
-          "&:hover": {
-            transform: "translateY(-5px)",
-            boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
-          },
-          p: 2,
-          backgroundColor: "background.paper",
-          }}>
-          <CardContent sx={{ 
-            display: "flex", 
-            flexDirection: "column", 
-            gap: 1,
-            }}>
-            <Typography variant="h6" color="primary" gutterBottom sx={{ fontWeight: 600 }}>
-              {dish.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {dish.description}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              ₹{parseFloat(dish.price).toFixed(2)}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {dish.restaurantName}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {parseFloat(dish.distanceInKm).toFixed(2)} km away
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Cuisine: {dish.cuisine}
-            </Typography>
+      <Card sx={{ minWidth: 300, margin: 2, padding: 2 }}>
+        <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Typography variant="h6">{dish.name}</Typography>
+          <Typography variant="body2">{dish.description}</Typography>
+          <Typography variant="body2">{dish.price}</Typography>
+          <Typography variant="body2">{dish.restaurantName}</Typography>
+          <Typography variant="body2">{dish.distanceInKm}</Typography>
+          <Typography variant="body2">{dish.cuisine}</Typography>
+          <img src={dish.image} alt={dish.name} />
+          <IconButton
+            color="primary"
+            aria-label="add to shopping cart"
+            onClick={addOrder}
+          >
+            <AddShoppingCart />
+          </IconButton>
 
-            {dish.image && (
-              <Box
-                component="img"
-                src={dish.image}
-                alt={dish.name}
-                sx={{
-                  width: "100%",
-                  height: "180px",
-                  objectFit: "cover",
-                  borderRadius: 2,
-                  mt: 1,
-                  mb: 1, 
-                }}
-              />
-            )}
-
-            <Box sx={{display: "flex", justifyContent: "space-between", mt: 1}}>
-              <Tooltip title="Order" arrow>
-                <IconButton color="primary" aria-label="add to shopping cart" onClick={addOrder}>
-                  <AddShoppingCart />
-                </IconButton>
-              </Tooltip>
-
-              <Tooltip title="Favorite" arrow>
-                <IconButton color="primary" aria-label="add to favorites" onClick={addFavorite}>
-                  <Favorite />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          </CardContent>
-        </Card>
-      </Fade>
+          <IconButton
+            color="primary"
+            aria-label="add to favorites"
+            onClick={async () => {
+              try {
+                const response = await axiosInstance.post(
+                  "/api/favourites/save",
+                  {
+                    dishId: dish.id,
+                  }
+                );
+                console.log(response.data);
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            <Favorite />
+          </IconButton>
+        </CardContent>
+      </Card>
 
       {/* Error Snackbar */}
       <Snackbar
@@ -153,7 +119,11 @@ const DishCard = ({ dish }) => {
         onClose={handleCloseError}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert onClose={handleCloseError} severity="error" sx={{ width: "100%" }} >
+        <Alert
+          onClose={handleCloseError}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
           {error}
         </Alert>
       </Snackbar>
@@ -165,7 +135,11 @@ const DishCard = ({ dish }) => {
         onClose={handleCloseOrderSuccess}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert onClose={handleCloseOrderSuccess} severity="success" sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleCloseOrderSuccess}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
           Dish added to Orders
         </Alert>
       </Snackbar>
@@ -177,7 +151,11 @@ const DishCard = ({ dish }) => {
         onClose={handleCloseFavSuccess}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert onClose={handleCloseFavSuccess} severity="success" sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleCloseFavSuccess}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
           Dish added to favourites
         </Alert>
       </Snackbar>

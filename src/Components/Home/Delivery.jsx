@@ -56,6 +56,9 @@ const Delivery = () => {
             `/delivery/session/${sessionId}`
           );
           console.log("Session delivery response:", sessionResponse.data);
+
+          const deleteOrder = await axiosInstance.delete(`/api/orders/clear`);
+          console.log("Order deleted:", deleteOrder.data);
         }
 
         // Always fetch both pending and completed deliveries
@@ -113,145 +116,49 @@ const Delivery = () => {
       ) : (
         <>
           {pendingDelivery.length > 0 && (
-            <Fade in timeout={800}>
-              <Box sx={{ mb: 4 }}>
-                <Typography variant="h6" color="secondary" fontWeight={600} gutterBottom>
-                  Pending Deliveries
-                </Typography>
-              
-                {pendingDelivery.map((delivery, index) => (
-                  <Card key={index} sx={{ mb: 2, backgroundColor: "background.paper", p: 2 }}>
-                    <CardContent>
-                      <Typography variant="body1" fontWeight={600}>#{delivery.id}</Typography>
-                      <Typography variant="body2">Status: {delivery.deliveryStatus}</Typography>
-                      <Typography variant="body2">Restaurant: {delivery.restaurantName}</Typography>
-                      <Typography variant="body2">Address: {delivery.deliveryAddress}</Typography>
-                      <Typography variant="body2">Distance: {delivery.distance} km</Typography>
-                      <Typography variant="body2">Estimated Time: {delivery.time} minutes</Typography>
-                      <Typography variant="body2">Delivery Time: {new Date(delivery.deliveryTime).toLocaleString()}</Typography>
-                      <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle2" fontWeight="bold">Items:</Typography>
-                        {(() => {
-                          try {
-                            const parsedItems = JSON.parse(delivery.items);
-                            return parsedItems.map((item, i) => (
-                              <Box
-                                key={i}
-                                sx={{
-                                  backgroundColor: "background.default",
-                                  borderRadius: 2,
-                                  p: 1.5,
-                                  my: 1,
-                                  boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-                                }}
-                              >
-                                <Typography variant="subtitle1" fontWeight={600}>
-                                  {i + 1}. {item.dishName}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                  Price: ₹{parseFloat(item.price).toFixed(2)}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                  Quantity: {item.quantity}
-                                </Typography>
-                              </Box>
-                            ));
-                          } catch (err) {
-                            return <Typography variant="body2" color="error">Unable to load item details</Typography>;
-                          }
-                        })()}
-                      </Box>
-                      <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }} >
-                        Total Paid: ₹
-                        {(() => {
-                          try {
-                            const parsedItems = JSON.parse(delivery.items);
-                            return parsedItems
-                              .reduce((count, item) => count + item.price * item.quantity, 0)
-                              .toFixed(2);
-                          } catch (err) {
-                            return "—";
-                          }
-                        })()}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                ))}
-              </Box>
-            </Fade>
+            <div>
+              <h2>Pending Deliveries</h2>
+              {pendingDelivery.map((delivery, index) => (
+                <div key={index}>
+                  <p>Id: {delivery.id}</p>
+                  <p>Status: {delivery.deliveryStatus}</p>
+                  <p>Restaurant: {delivery.restaurantName}</p>
+                  <p>Address: {delivery.deliveryAddress}</p>
+                  <p>Distance: {delivery.distance} km</p>
+                  <p>Estimated Time: {delivery.time} minutes</p>
+                  <p>Order ID: {delivery.orderId}</p>
+                  <p>
+                    Delivery Time:{" "}
+                    {new Date(delivery.deliveryTime).toLocaleString()}
+                  </p>
+                  <p>Items: {delivery.items}</p>
+                  <hr />
+                </div>
+              ))}
+            </div>
           )}
 
           <Divider sx={{ my: 4 }} />
 
           {completedDelivery.length > 0 && (
-            <Fade in timeout={800}>
-              <Box sx={{ mb: 4 }}>
-                <Typography
-                  variant="h6"
-                  color="success.main"
-                  fontWeight={600}
-                  gutterBottom
-                >
-                  Completed Deliveries
-                </Typography>
-
-                {completedDelivery.map((delivery, index) => (
-                  <Card key={index} sx={{ mb: 2, backgroundColor: "background.paper", p: 2 }}>
-                    <CardContent>
-                      <Typography variant="body1" fontWeight={600}>#{delivery.id}</Typography>
-                      <Typography variant="body2">Status: {delivery.deliveryStatus}</Typography>
-                      <Typography variant="body2">Restaurant: {delivery.restaurantName}</Typography>
-                      <Typography variant="body2">Address: {delivery.deliveryAddress}</Typography>
-                      <Typography variant="body2">Distance: {delivery.distance} km</Typography>
-                      <Typography variant="body2">Estimated Time: {delivery.time} minutes</Typography>
-                      <Typography variant="body2">Delivery Time: {new Date(delivery.deliveryTime).toLocaleString()}</Typography>
-                      <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle2" fontWeight="bold">Items:</Typography>
-                        {(() => {
-                          try {
-                            const parsedItems = JSON.parse(delivery.items);
-                            return parsedItems.map((item, i) => (
-                              <Box
-                                key={i}
-                                sx={{
-                                  backgroundColor: "background.default",
-                                  borderRadius: 2,
-                                  p: 1.5,
-                                  my: 1,
-                                  boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-                                }}
-                              >
-                                <Typography variant="subtitle1" fontWeight={600}>
-                                  {i + 1}. {item.dishName}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                  Price: ₹{parseFloat(item.price).toFixed(2)}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                  Quantity: {item.quantity}
-                                </Typography>
-                              </Box>
-                            ));
-                          } catch (err) {
-                            return <Typography variant="body2" color="error">Unable to load item details</Typography>;
-                          }
-                        })()}
-                      </Box>
-                      <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 2 }} >
-                        Total Paid: ₹
-                        {(() => {
-                          try {
-                            const parsedItems = JSON.parse(delivery.items);
-                            return parsedItems
-                              .reduce((count, item) => count + item.price * item.quantity, 0)
-                              .toFixed(2);
-                          } catch (err) {
-                            return "—";
-                          }
-                        })()}
-                      </Typography>
-                  </CardContent>
-                </Card>
+            <div>
+              <h2>Completed Deliveries</h2>
+              {completedDelivery.map((delivery, index) => (
+                <div key={index}>
+                  <p>Id: {delivery.id}</p>
+                  <p>Status: {delivery.deliveryStatus}</p>
+                  <p>Restaurant: {delivery.restaurantName}</p>
+                  <p>Address: {delivery.deliveryAddress}</p>
+                  <p>Distance: {delivery.distance} km</p>
+                  <p>Estimated Time: {delivery.time} minutes</p>
+                  <p>Order ID: {delivery.orderId}</p>
+                  <p>
+                    Delivery Time:{" "}
+                    {new Date(delivery.deliveryTime).toLocaleString()}
+                  </p>
+                  <p>Items: {delivery.items}</p>
+                  <hr />
+                </div>
               ))}
             </Box>
           </Fade>
