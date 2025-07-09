@@ -56,6 +56,9 @@ const Delivery = () => {
             `/delivery/session/${sessionId}`
           );
           console.log("Session delivery response:", sessionResponse.data);
+
+          const deleteOrder = await axiosInstance.delete(`/api/orders/clear`);
+          console.log("Order deleted:", deleteOrder.data);
         }
 
         // Always fetch both pending and completed deliveries
