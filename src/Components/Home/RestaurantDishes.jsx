@@ -51,7 +51,7 @@ const RestaurantDishes = () => {
         gutterBottom
         textAlign={"center"}
       >
-        Restaurant Dishes
+        Restaurant Dishes 🍜
       </Typography>
 
       {/* Search Bar */}
