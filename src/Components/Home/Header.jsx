@@ -38,10 +38,7 @@ const Header = ({ city, setCity }) => {
   // Menu actions (you can implement logic later)
   const handleProfile = () => {
     console.log("Profile clicked");
-    handleMenuClose();
-  };
-  const handleAccount = () => {
-    console.log("Account clicked");
+    navigate("/profile");
     handleMenuClose();
   };
   const handleLogout = () => {
@@ -81,7 +78,7 @@ const Header = ({ city, setCity }) => {
                 color: "primary.contrastText",
               }}
             >
-              🍽️ Crave Corner
+              Crave Corner 🍽️ 
             </Typography>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -133,7 +130,6 @@ const Header = ({ city, setCity }) => {
                 }}
               >
                 <MenuItem onClick={handleProfile}>Profile</MenuItem>
-                <MenuItem onClick={handleAccount}>Account</MenuItem>
                 <Divider />
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>

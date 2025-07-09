@@ -1,4 +1,5 @@
 import "./App.css";
+import React from "react";
 import LoginComponent from "./Components/Auth/LoginComponent";
 import RegisterForm from "./Components/Auth/RegisterForm";
 import { Routes, Route } from "react-router-dom";
@@ -11,6 +12,7 @@ import Orders from "./Components/Home/Orders";
 import MainLayout from "./Components/Home/MainLayout";
 import RestaurantDishes from "./Components/Home/RestaurantDishes";
 import Delivery from "./Components/Home/Delivery";
+import Profile from "./Components/Home/Profile";
 
 function App() {
   return (
@@ -40,6 +42,7 @@ function App() {
           <Route path="favorites" element={<Favorites />} />
           <Route path="orders" element={<Orders />} />
           <Route path="delivery" element={<Delivery />} />
+          <Route path="profile" element={<Profile/>} />
         </Route>
       </Routes>
     </div>

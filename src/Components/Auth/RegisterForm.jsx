@@ -304,6 +304,7 @@ const RegisterForm = () => {
                 <>
                   <input
                     type="file"
+                    data-testid="image-upload"
                     accept="image/jpeg, image/png, image/jpg"
                     onChange={(e) => {
                       const file = e.target.files[0];

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import BottomNavigation from "./BottomNavigation";
-import { useState, createContext, useEffect } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 

@@ -119,7 +119,7 @@ const Delivery = () => {
                   Pending Deliveries
                 </Typography>
               
-                {pendingDelivery.map((delivery, index) => (
+                {[...pendingDelivery].reverse().map((delivery, index) => (
                   <Card key={index} sx={{ mb: 2, backgroundColor: "background.paper", p: 2 }}>
                     <CardContent>
                       <Typography variant="body1" fontWeight={600}>#{delivery.id}</Typography>
@@ -195,7 +195,7 @@ const Delivery = () => {
                   Completed Deliveries
                 </Typography>
 
-                {completedDelivery.map((delivery, index) => (
+                {[...completedDelivery].reverse().map((delivery, index) => (
                   <Card key={index} sx={{ mb: 2, backgroundColor: "background.paper", p: 2 }}>
                     <CardContent>
                       <Typography variant="body1" fontWeight={600}>#{delivery.id}</Typography>
