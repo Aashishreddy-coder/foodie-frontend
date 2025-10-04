@@ -13,6 +13,7 @@ import MainLayout from "./Components/Home/MainLayout";
 import RestaurantDishes from "./Components/Home/RestaurantDishes";
 import Delivery from "./Components/Home/Delivery";
 import Profile from "./Components/Home/Profile";
+import { Navigate } from "react-router-dom";
 
 function App() {
   return (
@@ -30,7 +31,8 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="/home" element={<HomeComponent />}>
+          <Route index element={<Navigate to="/home" />} />
+          <Route path="home" element={<HomeComponent />}>
             <Route index element={<Restaurant />} />
             <Route path="restaurant" element={<Restaurant />} />
             <Route
@@ -42,7 +44,7 @@ function App() {
           <Route path="favorites" element={<Favorites />} />
           <Route path="orders" element={<Orders />} />
           <Route path="delivery" element={<Delivery />} />
-          <Route path="profile" element={<Profile/>} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
     </div>

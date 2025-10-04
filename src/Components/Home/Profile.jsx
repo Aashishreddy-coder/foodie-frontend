@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../utils/axios";
 import {
   Box,
@@ -10,14 +10,51 @@ import {
   useTheme,
   useMediaQuery,
   Fade,
+  IconButton,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [imageUpdatedAt, setImageUpdatedAt] = useState(Date.now());
 
+  const fileInputRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const handleEditProfile = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const response = await axiosInstance.put(
+          "/api/users/update/image",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        setUser({
+          ...user,
+          image: response.data.image,
+        });
+        setImageUpdatedAt(Date.now());
+        console.log("Image updated:", response.data);
+      } catch (error) {
+        console.error("Error updating image:", error);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -91,7 +128,7 @@ const Profile = () => {
               }}
             >
               <Avatar
-                src={`http://localhost:8085/images/${user.image}`}
+                src={`http://localhost:8085/images/${user.image}?t=${imageUpdatedAt}`}
                 alt={user.name}
                 sx={{
                   width: 100,
@@ -101,7 +138,23 @@ const Profile = () => {
                   mb: 2,
                 }}
               />
-              <Typography variant={isMobile ? "h6" : "h5"} fontWeight="bold" color="primary">
+              <IconButton color="red" onClick={handleEditProfile}>
+                <EditIcon />
+              </IconButton>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+                ref={fileInputRef}
+              />
+
+              <Typography
+                variant={isMobile ? "h6" : "h5"}
+                fontWeight="bold"
+                color="primary"
+              >
                 {user.name}
               </Typography>
               <Box sx={{ width: "100%", mt: 2 }}>
@@ -109,8 +162,9 @@ const Profile = () => {
                   <strong>Email:</strong> {user.email}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                  <strong>Password:</strong> {user.password}
+                  <strong>Password:</strong> *********
                 </Typography>
+
                 <Typography variant="body1" gutterBottom>
                   <strong>Phone:</strong> {user.phone}
                 </Typography>

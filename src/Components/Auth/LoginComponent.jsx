@@ -71,12 +71,12 @@ const LoginComponent = () => {
             component="form"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Typography 
-            variant="h5" 
-            component="h1" 
-            align="center" 
-            color="primary"
-            fontWeight="bold"
+            <Typography
+              variant="h5"
+              component="h1"
+              align="center"
+              color="primary"
+              fontWeight="bold"
             >
               Welcome Back 👋
             </Typography>
@@ -103,7 +103,6 @@ const LoginComponent = () => {
               {...register("email", { required: "Email is required" })}
               error={!!errors.email}
               helperText={errors.email?.message}
-              
             />
             <TextField
               fullWidth

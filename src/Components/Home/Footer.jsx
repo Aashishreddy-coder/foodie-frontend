@@ -9,12 +9,7 @@ import {
   Stack,
   Divider,
 } from "@mui/material";
-import {
-  Facebook,
-  Instagram,
-  Twitter,
-  LinkedIn,
-} from "@mui/icons-material";
+import { Facebook, Instagram, Twitter, LinkedIn } from "@mui/icons-material";
 
 const Footer = () => {
   return (

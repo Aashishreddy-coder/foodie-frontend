@@ -34,4 +34,5 @@ const MainLayout = () => {
     </cityContext.Provider>
   );
 };
+
 export default MainLayout;

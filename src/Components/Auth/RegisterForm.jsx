@@ -95,19 +95,18 @@ const RegisterForm = () => {
 
       setPendingSuccessMessage("Registration successful!");
       setErrorMessage("");
-      
+
       reset(); // Clear form
       setPreviewImage(null); // Reset preview image
       setSelectedFile(null); // Reset selected file
-    }
-    catch (error) {
+    } catch (error) {
       console.log("Full error:", error);
-      
-      const errorMsg = 
-        error.response && error.response.data 
-          ? error.response.data 
+
+      const errorMsg =
+        error.response && error.response.data
+          ? error.response.data
           : "Something went wrong. Please try again.";
-      
+
       setPendingErrorMessage(errorMsg);
       setSuccessMessage("");
     }
@@ -128,8 +127,8 @@ const RegisterForm = () => {
         <Grow in timeout={1000}>
           <Paper
             elevation={6}
-            sx={{ 
-              p: 4, 
+            sx={{
+              p: 4,
               borderRadius: 4,
               display: "flex",
               flexDirection: "column",
@@ -138,7 +137,12 @@ const RegisterForm = () => {
             component="form"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Typography variant="h5" component="h1" align="center" color="primary">
+            <Typography
+              variant="h5"
+              component="h1"
+              align="center"
+              color="primary"
+            >
               Create Your Account
             </Typography>
 
@@ -171,7 +175,7 @@ const RegisterForm = () => {
               fullWidth
               label="Name"
               color="primary"
-              {...register("name", { 
+              {...register("name", {
                 required: "Name is required",
                 pattern: {
                   value: /^[a-zA-Z\s]+$/,
@@ -189,17 +193,18 @@ const RegisterForm = () => {
               error={!!errors.name}
               helperText={errors.name?.message}
             />
-            
+
             {/* Email */}
             <TextField
               fullWidth
               type="email"
               label="Email"
               color="primary"
-              {...register("email", { 
+              {...register("email", {
                 required: "Email is required",
                 pattern: {
-                  value: /^[a-zA-Z0-9](\.?[a-zA-Z0-9_-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$/,
+                  value:
+                    /^[a-zA-Z0-9](\.?[a-zA-Z0-9_-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$/,
                   message: "Invalid email format",
                 },
               })}
@@ -220,7 +225,8 @@ const RegisterForm = () => {
                   message: "Password must be at least 6 characters",
                 },
                 pattern: {
-                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;"'<>?,./\\|~`-]).{6,}$/,
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;"'<>?,./\\|~`-]).{6,}$/,
                   message:
                     "Password must contain uppercase, lowercase, digit, and special character",
                 },
@@ -252,15 +258,16 @@ const RegisterForm = () => {
               color="primary"
               inputProps={{
                 inputMode: "numeric", // helps mobile keyboard show numeric keypad
-                pattern: "[0-9]*",    // optional: hint to browser
+                pattern: "[0-9]*", // optional: hint to browser
               }}
-              {...register("phone", { 
+              {...register("phone", {
                 required: "Phone number is required",
                 validate: {
                   isDigits: (value) =>
                     /^[0-9]+$/.test(value) || "Only digits are allowed",
                   isTenDigits: (value) =>
-                    value.length === 10 || "Phone number must be exactly 10 digits",
+                    value.length === 10 ||
+                    "Phone number must be exactly 10 digits",
                   doesNotStartWithZero: (value) =>
                     !/^0/.test(value) || "Phone number cannot start with 0",
                 },
@@ -274,7 +281,7 @@ const RegisterForm = () => {
               fullWidth
               label="Address"
               color="primary"
-              {...register("address", { 
+              {...register("address", {
                 required: "Address is required",
                 minLength: {
                   value: 10,
@@ -285,7 +292,8 @@ const RegisterForm = () => {
                   message: "Address must not exceed 100 characters",
                 },
                 validate: (value) =>
-                  value.trim().length > 0 || "Address cannot be empty or spaces only",
+                  value.trim().length > 0 ||
+                  "Address cannot be empty or spaces only",
               })}
               error={!!errors.address}
               helperText={errors.address?.message}
@@ -293,9 +301,10 @@ const RegisterForm = () => {
 
             {/* Profile Image */}
             <Typography variant="body2" color="text.secondary">
-              Profile Image (JPG, PNG, JPEG only) <span style={{ color: 'red' }}>*</span>
+              Profile Image (JPG, PNG, JPEG only){" "}
+              <span style={{ color: "red" }}>*</span>
             </Typography>
-            
+
             <Controller
               name="image"
               control={control}
@@ -309,9 +318,9 @@ const RegisterForm = () => {
                     onChange={(e) => {
                       const file = e.target.files[0];
                       if (!file) return;
-                      
+
                       field.onChange(e.target.files); // Let RHF know the file changed
-                      setSelectedFile(file); 
+                      setSelectedFile(file);
 
                       const reader = new FileReader();
                       reader.onloadend = () => {
@@ -324,7 +333,7 @@ const RegisterForm = () => {
 
                   {/* Display error message if image validation fails */}
                   {errors.image && (
-                    <Typography variant="body2" color="error" >
+                    <Typography variant="body2" color="error">
                       {errors.image.message}
                     </Typography>
                   )}
@@ -333,28 +342,28 @@ const RegisterForm = () => {
             />
 
             <Fade in={!!previewImage} timeout={500}>
-                <Box
-                  sx={{
-                    mb: 2,
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  {previewImage && (
-                    <img
-                      src={previewImage}
-                      alt="Profile Preview"
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        borderRadius: "50%",
-                        objectFit: "cover",
-                        border: "1px solid #ccc",
-                      }}
-                    />
-                  )}
-                </Box>
-              </Fade>
+              <Box
+                sx={{
+                  mb: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                {previewImage && (
+                  <img
+                    src={previewImage}
+                    alt="Profile Preview"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      border: "1px solid #ccc",
+                    }}
+                  />
+                )}
+              </Box>
+            </Fade>
 
             {/* Show selected file name if any*/}
             {selectedFile && (
@@ -364,12 +373,7 @@ const RegisterForm = () => {
             )}
 
             {/* Submit */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-            >
+            <Button type="submit" fullWidth variant="contained" color="primary">
               Register
             </Button>
 

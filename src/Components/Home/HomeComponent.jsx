@@ -60,10 +60,9 @@ const HomeComponent = () => {
                 py: 1,
                 transition: "background-color 0.3s ease, color 0.3s ease",
                 "&:hover": {
-                  backgroundColor:
-                    currentPath.includes("/restaurant")
-                      ? theme.palette.primary.dark
-                      : theme.palette.primary.light,
+                  backgroundColor: currentPath.includes("/restaurant")
+                    ? theme.palette.primary.dark
+                    : theme.palette.primary.light,
                   color: theme.palette.primary.contrastText,
                 },
               }}
@@ -75,9 +74,7 @@ const HomeComponent = () => {
             <Button
               component={RouterLink}
               to="dish"
-              variant={
-                currentPath.includes("/dish") ? "contained" : "outlined"
-              }
+              variant={currentPath.includes("/dish") ? "contained" : "outlined"}
               color="primary"
               size={isMobile ? "small" : "medium"}
               sx={{
@@ -87,10 +84,9 @@ const HomeComponent = () => {
                 px: 3,
                 py: 1,
                 "&:hover": {
-                  backgroundColor:
-                    currentPath.includes("/dish")
-                      ? theme.palette.primary.dark
-                      : theme.palette.primary.light,
+                  backgroundColor: currentPath.includes("/dish")
+                    ? theme.palette.primary.dark
+                    : theme.palette.primary.light,
                   color: theme.palette.primary.contrastText,
                 },
               }}

@@ -3,14 +3,14 @@ import { useContext, useState, useEffect } from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { cityContext } from "./MainLayout";
 import axiosInstance from "../../utils/axios";
-import { 
-  Alert, 
-  Box, 
+import {
+  Alert,
+  Box,
   Button,
   Collapse,
   Fade,
   Paper,
-  Typography 
+  Typography,
 } from "@mui/material";
 
 const mapContainerStyle = {
@@ -35,7 +35,7 @@ const MapSelector = ({
   const [distanceError, setDistanceError] = useState(null);
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyCzviV_eTddv220qNG0wrl_kVLzpCAgLPQ",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
   useEffect(() => {
@@ -104,8 +104,20 @@ const MapSelector = ({
       </Button>
 
       <Collapse in={showMap} timeout={500}>
-        <Box sx={{ border: "1px solid #ccc", borderRadius: 2, overflow: "hidden", mt: 2 }}>
-          <Typography variant="h6" align="center" sx={{ py: 1 }} color="primary">
+        <Box
+          sx={{
+            border: "1px solid #ccc",
+            borderRadius: 2,
+            overflow: "hidden",
+            mt: 2,
+          }}
+        >
+          <Typography
+            variant="h6"
+            align="center"
+            sx={{ py: 1 }}
+            color="primary"
+          >
             Tap on the map to select your delivery point
           </Typography>
           <GoogleMap
@@ -122,12 +134,23 @@ const MapSelector = ({
       {selectedLocation && (
         <Fade in timeout={600}>
           <Paper elevation={2} sx={{ p: 2, mt: 2 }}>
-            <Typography variant="subtitle1" fontWeight={600}>Delivery Details:</Typography>
-            <Typography variant="body2">Latitude: {selectedLocation.lat.toFixed(6)}</Typography>
-            <Typography variant="body2">Longitude: {selectedLocation.lng.toFixed(6)}</Typography>
-            {distance && <Typography variant="body2">Distance: {distance.toFixed(2)} km</Typography>}
-            {address && <Typography variant="body2">Address: {address}</Typography>}
-            {time && <Typography variant="body2">Estimated Time: {time} minutes</Typography>}
+            <Typography variant="subtitle1" fontWeight={600}>
+              Delivery Details:
+            </Typography>
+
+            {distance && (
+              <Typography variant="body2">
+                Distance: {distance.toFixed(2)} km
+              </Typography>
+            )}
+            {address && (
+              <Typography variant="body2">Address: {address}</Typography>
+            )}
+            {time && (
+              <Typography variant="body2">
+                Estimated Time: {time} minutes
+              </Typography>
+            )}
             {distanceError && (
               <Alert severity="error" sx={{ mt: 2 }}>
                 {distanceError}

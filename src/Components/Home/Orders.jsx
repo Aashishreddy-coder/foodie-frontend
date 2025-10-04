@@ -45,7 +45,7 @@ const Orders = () => {
 
       if (response.data && response.data.sessionUrl) {
         setPayment(response.data);
-        // Use replace instead of href for better handling
+
         window.location.replace(response.data.sessionUrl);
       } else {
         console.error("Invalid payment session response:", response.data);
@@ -115,10 +115,10 @@ const Orders = () => {
 
   return (
     <Fade in timeout={800}>
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           backgroundColor: "background.container",
-          p: { xs: 2, md: 3 }, 
+          p: { xs: 2, md: 3 },
           borderRadius: 4,
           boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
           mt: 2,
@@ -137,7 +137,7 @@ const Orders = () => {
         </Typography>
 
         <Card
-          sx={{ 
+          sx={{
             borderRadius: 3,
             boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
             transition: "transform 0.3s ease, box-shadow 0.3s ease",
@@ -157,26 +157,25 @@ const Orders = () => {
               Email: {order.userEmail}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Restaurant: {restaurant ? restaurant.restaurantName : "Loading..."}
+              Restaurant:{" "}
+              {restaurant ? restaurant.restaurantName : "Loading..."}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Restaurant ID: {order.restaurantId}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-              Payment Status: {order.paymentStatus}
             </Typography>
 
             <Divider sx={{ my: 2 }} />
 
             <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-              Items (total - {order.items.reduce((count, item) => count + item.quantity, 0)}):
+              Items (total -{" "}
+              {order.items.reduce((count, item) => count + item.quantity, 0)}):
             </Typography>
 
             <Stack spacing={2}>
               {order.items.map((item, index) => (
-                <Box 
-                  key={index} 
-                  sx={{ 
+                <Box
+                  key={index}
+                  sx={{
                     backgroundColor: "background.default",
                     borderRadius: 2,
                     p: 2,
@@ -193,7 +192,11 @@ const Orders = () => {
                     Quantity: {item.quantity}
                   </Typography>
 
-                  <ButtonGroup disableElevation variant="contained" sx={{ mt: 1 }} >
+                  <ButtonGroup
+                    disableElevation
+                    variant="contained"
+                    sx={{ mt: 1 }}
+                  >
                     <Button
                       onClick={() =>
                         handleQuantityChange(item.dishId, "decrement")
