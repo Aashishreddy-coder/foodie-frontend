@@ -29,8 +29,7 @@ const LoginComponent = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:8085/api/users/login",
-        data
+        "http://3.6.206.43:8085/api/users/login"
       );
       console.log(response.data);
       localStorage.setItem("token", response.data);

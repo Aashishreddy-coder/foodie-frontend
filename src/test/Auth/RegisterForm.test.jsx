@@ -49,7 +49,7 @@ describe("RegisterForm", () => {
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith(
-        "http://localhost:8085/api/users/register",
+        "http://3.6.206.43:8085/api/users/register",
         expect.any(FormData)
       );
     });
@@ -64,10 +64,14 @@ describe("RegisterForm", () => {
       expect(screen.getByText(/Name is required/i)).toBeInTheDocument();
       expect(screen.getByText(/Email is required/i)).toBeInTheDocument();
       expect(screen.getByText(/Password is required/i)).toBeInTheDocument();
-      expect(screen.getByText(/Please confirm your password/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Please confirm your password/i)
+      ).toBeInTheDocument();
       expect(screen.getByText(/Phone number is required/i)).toBeInTheDocument();
       expect(screen.getByText(/Address is required/i)).toBeInTheDocument();
-      expect(screen.getByText(/Profile image is required/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Profile image is required/i)
+      ).toBeInTheDocument();
     });
   });
 });

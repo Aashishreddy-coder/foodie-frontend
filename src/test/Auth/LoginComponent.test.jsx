@@ -52,7 +52,7 @@ describe("LoginComponent", () => {
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith(
-        "http://localhost:8085/api/users/login",
+        "http://3.6.206.43:8085/api/users/login",
         {
           email: "test@example.com",
           password: "password123",

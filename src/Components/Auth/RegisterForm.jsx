@@ -88,7 +88,7 @@ const RegisterForm = () => {
 
       // Make API call to register user
       const response = await axios.post(
-        "http://localhost:8085/api/users/register",
+        "http://3.6.206.43:8085/api/users/register",
         formData
       );
       console.log(response.data);
